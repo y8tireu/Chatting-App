@@ -1,15 +1,18 @@
 // server.js
 const express = require('express');
+const path = require('path'); // Needed to construct file paths
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
+// Serve the index.html file from the root directory
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Socket.io event handling
 const users = {}; // Mapping of username -> socket.id
 
-// Serve static files from the "public" folder
-app.use(express.static('public'));
-
-// When a client connects...
 io.on('connection', (socket) => {
   console.log('A user connected');
 
@@ -22,20 +25,17 @@ io.on('connection', (socket) => {
 
   // Global message: broadcast to everyone
   socket.on('chat message', (msgObj) => {
-    // msgObj should have { username, message }
     io.emit('chat message', msgObj);
   });
 
   // Private message: send only to the specified friend
   socket.on('private message', (msgObj) => {
-    // msgObj should have { to, from, message }
     const targetSocketId = users[msgObj.to];
     if (targetSocketId) {
       io.to(targetSocketId).emit('private message', msgObj);
       // Also send to the sender so they can see their outgoing message.
       socket.emit('private message', msgObj);
     } else {
-      // Notify sender if the friend is not online
       socket.emit('system message', { message: `User "${msgObj.to}" is not online.` });
     }
   });
