@@ -2,6 +2,7 @@
  * server.js
  *
  * An improved chat server using Express and Socket.IO.
+ * Now serving static files (including index.html) from the root directory.
  */
 
 require('dotenv').config(); // Load environment variables from a .env file if present
@@ -38,26 +39,25 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Serve static files from the 'public' directory
-// (Place your index.html, CSS, and client-side JS files inside /public)
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve static files from the root directory
+// (Ensure your index.html and other assets are located in the root)
+app.use(express.static(__dirname));
 
-// Fallback route for the root URL to serve index.html
+// Explicitly serve index.html on the root route (optional but recommended)
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // -----------------------------
 // Create HTTP & Socket.IO Servers
 // -----------------------------
 
-// Create HTTP server
 const server = http.createServer(app);
 
 // Initialize Socket.IO with CORS settings (adjust origin for production)
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "*", // Adjust this in production for better security
     methods: ["GET", "POST"],
   },
 });
