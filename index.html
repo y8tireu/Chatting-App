@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Full Screen Chat App</title>
+  <title>Texting App</title>
   <style>
     /* Reset margins and set full-screen dimensions */
     html, body {
@@ -22,7 +22,7 @@
     /* Friend Panel (left) - Gray background */
     #friend-panel {
       width: 250px;
-      background-color: #444;  /* Gray background */
+      background-color: #444;
       padding: 10px;
       border-right: 1px solid #333;
       overflow-y: auto;
@@ -268,7 +268,7 @@
           currentChat = friend;
           document.getElementById('chat-title').textContent = 'Chat with ' + friend;
           document.getElementById('global-chat-btn').style.display = 'inline-block';
-          messages.innerHTML = ''; // Optionally clear messages when switching chats.
+          messages.innerHTML = '';
         });
         li.appendChild(msgBtn);
         friendListEl.appendChild(li);
@@ -296,7 +296,7 @@
     const chatTitle = document.getElementById('chat-title');
     const globalChatBtn = document.getElementById('global-chat-btn');
 
-    // 'global' for public chat, or set to a friend's username for private chat.
+    // 'global' for public chat or set to a friend's username for private chat.
     let currentChat = 'global';
 
     // Switch back to Global Chat.
