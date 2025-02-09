@@ -2,9 +2,9 @@
   "name": "texting-app",
   "version": "1.0.0",
   "description": "A simple texting app built with Node.js, Express, and Socket.io",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
